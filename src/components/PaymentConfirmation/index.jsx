@@ -29,7 +29,7 @@ const PaymentConfirmation = ({
         <strong>Total Amount:</strong> ₹{totalAmount}
       </p>
       <p>
-        <strong>UPI ID:</strong> yourupi@upi
+        <strong>UPI ID:</strong> 9969372757@paytm
       </p>
 
       <button style={{ marginTop: 10 }}>

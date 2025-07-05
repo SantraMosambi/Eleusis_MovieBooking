@@ -33,7 +33,7 @@ export default function BookingForm() {
 
   const selectedSlot = slots.find((slot) => slot.slot_id === selectedSlotId);
   const totalAmount = selectedSlot ? selectedSlot.pricePerSeat * seats : 0;
-  const upiUrl = `upi://pay?pa=yourupi@upi&pn=${name}&am=${totalAmount}&cu=INR`;
+  const upiUrl = `upi://pay?pa=9969372757@paytm&pn=${name}&am=${totalAmount}&cu=INR`;
 
   const handleBooking = async () => {
     if (!name || seats < 1) return alert("Please fill all fields");
