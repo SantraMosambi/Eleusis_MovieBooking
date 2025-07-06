@@ -54,10 +54,10 @@ const BookingPage = () => {
       return;
     }
 
-    // if (!phoneRegex.test(phone)) {
-    //   alert("Please enter a valid 10-digit phone number.");
-    //   return;
-    // }
+    if (!phoneRegex.test(phone)) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
 
     setSubmitted(true);
   };
@@ -281,6 +281,7 @@ const BookingPage = () => {
           name={name}
           phone={phone}
           selectedSlot={slot}
+          seats={seats}
           totalAmount={totalAmount}
           upiUrl={`upi://pay?pa=9969372757@paytm&pn=${name}&am=${totalAmount}&cu=INR`}
           handleBack={handleBackToBooking}

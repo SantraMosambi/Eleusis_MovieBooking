@@ -1,30 +1,68 @@
 import React, { useEffect, useState } from "react";
-import PaymentConfirmation from "../../components/PaymentConfirmation";
 import CustomCard from "../../components/common/Card";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import dummySlots from "../../components/data";
+// import dummySlots from "../../components/data";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   const navigate = useNavigate();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   useEffect(() => {
-    setTimeout(() => {
-      setSlots(dummySlots);
-      setLoading(false);
-    }, 1000);
+    const fetchSlots = async () => {
+      try {
+        const res = await fetch(
+          "https://sheetdb.io/api/v1/swkzzoyhwcw49?sheet=shows"
+        );
+        if (!res.ok) throw new Error("Network response was not ok");
+        let data = await res.json();
+        // Filter only Active shows
+        data = data.filter((slot) => slot.show_status === "Active");
+        setSlots(data);
+      } catch (error) {
+        console.error("Failed to fetch slots:", error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSlots();
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
       <p style={{ color: "#fff", textAlign: "center" }}>Loading shows...</p>
     );
+  }
+
+  if (error) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background:
+            "repeating-linear-gradient(90deg, #b11226 0px, #8a0e1f 10px, #b11226 20px)",
+          color: "#ffffff",
+          padding: "24px",
+          fontFamily: "'Cinzel', serif",
+          paddingTop: "180px",
+          boxSizing: "border-box",
+        }}
+      >
+        <p style={{ textAlign: "center" }}>
+          Failed to load shows. Please try again later.
+        </p>
+      </div>
+    );
+  }
 
   const getGridColumns = () => {
     if (isDesktop) return "repeat(4, 1fr)";
@@ -45,8 +83,6 @@ const HomePage = () => {
         boxSizing: "border-box",
       }}
     >
-      {loading && <div className="curtain"></div>}
-
       <h1
         style={{
           textAlign: "center",
@@ -72,7 +108,6 @@ const HomePage = () => {
         Lights. Camera. Book your seat.
       </h2>
 
-      {/* {!submitted ? /( */}
       <div
         style={{
           display: "grid",
@@ -91,15 +126,6 @@ const HomePage = () => {
           />
         ))}
       </div>
-      {/* ) : (
-        <PaymentConfirmation
-          name={name}
-          selectedSlotId={selectedSlotId}
-          totalAmount={seats * 100}
-          upiUrl={"upi://pay?pa=xyz@upi"}
-          handleBack={() => setSubmitted(false)}
-        />
-      )} */}
     </div>
   );
 };
