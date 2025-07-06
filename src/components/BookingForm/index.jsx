@@ -1,8 +1,42 @@
-// BookingForm.js
+// BookingForm.js (with dummy data for development)
 import React, { useEffect, useState } from "react";
 import PaymentConfirmation from "../PaymentConfirmation";
+import CustomCard from "../common/Card";
 
 const MAX_SEATS = 20; // Max seats constant
+
+const dummySlots = [
+  {
+    slot_id: "1",
+    day: "Friday",
+    date: "2025-07-18",
+    show_time: "5:00 PM",
+    movie_name: "Test Movie 1",
+    seats_available: 16,
+    pricePerSeat: 100,
+    show_status: "Active",
+  },
+  {
+    slot_id: "2",
+    day: "Friday",
+    date: "2025-07-18",
+    show_time: "10:00 PM",
+    movie_name: "Test Movie 2",
+    seats_available: 12,
+    pricePerSeat: 120,
+    show_status: "Active",
+  },
+  {
+    slot_id: "3",
+    day: "Saturday",
+    date: "2025-07-19",
+    show_time: "1:00 PM",
+    movie_name: "Test Movie 3",
+    seats_available: 20,
+    pricePerSeat: 150,
+    show_status: "Active",
+  },
+];
 
 export default function BookingForm() {
   const [slots, setSlots] = useState([]);
@@ -13,22 +47,15 @@ export default function BookingForm() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSlots = async () => {
-      try {
-        const res = await fetch(
-          "https://sheetdb.io/api/v1/swkzzoyhwcw49?sheet=shows"
-        );
-        let data = await res.json();
-        // Filter only Active shows
-        data = data.filter((slot) => slot.show_status === "Active");
-        setSlots(data);
-        setSelectedSlotId(data[0]?.slot_id);
-        setLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch slots:", error);
-      }
-    };
-    fetchSlots();
+    // Simulate loading delay with dummy data
+    setTimeout(() => {
+      const activeSlots = dummySlots.filter(
+        (slot) => slot.show_status === "Active"
+      );
+      setSlots(activeSlots);
+      setSelectedSlotId(activeSlots[0]?.slot_id);
+      setLoading(false);
+    }, 500);
   }, [submitted]);
 
   const selectedSlot = slots.find((slot) => slot.slot_id === selectedSlotId);
@@ -38,33 +65,25 @@ export default function BookingForm() {
   const handleBooking = async () => {
     if (!name || seats < 1) return alert("Please fill all fields");
 
-    await fetch("https://sheetdb.io/api/v1/swkzzoyhwcw49?sheet=booking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        data: {
-          booking_id: `B${Date.now()}`,
-          name,
-          slot_id: selectedSlot.slot_id,
-          seats_booked: seats,
-          booking_time: new Date().toISOString(),
-          paid: "No",
-        },
-      }),
+    // Dummy booking log
+    console.log("Booking Data:", {
+      booking_id: `B${Date.now()}`,
+      name,
+      slot_id: selectedSlot.slot_id,
+      seats_booked: seats,
+      booking_time: new Date().toISOString(),
+      paid: "No",
     });
 
     const remainingSeats = selectedSlot.seats_available - seats;
-    await fetch(
-      `https://sheetdb.io/api/v1/swkzzoyhwcw49/slot_id/${selectedSlot.slot_id}?sheet=shows`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          data: { seats_available: remainingSeats.toString() },
-        }),
-      }
-    );
 
+    // Update dummy data locally
+    const updatedSlots = slots.map((slot) =>
+      slot.slot_id === selectedSlot.slot_id
+        ? { ...slot, seats_available: remainingSeats }
+        : slot
+    );
+    setSlots(updatedSlots);
     setSubmitted(true);
   };
 
@@ -77,6 +96,7 @@ export default function BookingForm() {
   return (
     <div style={{ maxWidth: 450, margin: "auto" }}>
       <h2>Movie Seat Booking</h2>
+      <CustomCard />
       {!submitted ? (
         <>
           <label>Select Slot:</label>
