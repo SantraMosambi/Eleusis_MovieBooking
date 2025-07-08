@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/common/Header";
 import HomePage from "./pages/HomePage";
 import BookingPage from "./pages/BookingPage"; // You’ll create this
-import { Analytics } from "@vercel/analytics/react";
+import { inject } from "@vercel/analytics"; // ✅ CORRECT";
+
+inject();
 
 function App() {
   return (
