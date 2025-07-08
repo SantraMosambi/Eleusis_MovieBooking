@@ -9,9 +9,10 @@ const PaymentConfirmation = ({
   totalAmount,
   handleBack,
 }) => {
-  const [confirmText, setConfirmText] = useState("");
+  // const [confirmText, setConfirmText] = useState("");
   const [downloadReady, setDownloadReady] = useState(false);
   const [bookingId, setBookingId] = useState("");
+  const [isPaymentDone, setIsPaymentDone] = useState(false);
 
   // ✅ Memoize UPI URL so it's not recomputed on every render
   const upiUrl = useMemo(
@@ -23,10 +24,10 @@ const PaymentConfirmation = ({
   );
 
   const handleConfirm = async () => {
-    if (confirmText.trim().toUpperCase() !== "PAID") {
-      alert("Please type 'PAID' to confirm payment.");
-      return;
-    }
+    // if (confirmText.trim().toUpperCase() !== "PAID") {
+    //   alert("Please type 'PAID' to confirm payment.");
+    //   return;
+    // }
 
     try {
       const now = new Date();
@@ -162,30 +163,67 @@ const PaymentConfirmation = ({
 
       {/* Payment Confirmation */}
       {!downloadReady ? (
-        <div style={{ marginTop: "24px" }}>
-          <input
-            type="text"
-            placeholder="Type PAID to confirm"
-            value={confirmText}
-            onChange={(e) => setConfirmText(e.target.value)}
-            style={{
-              padding: "10px",
-              width: "60%",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-              textAlign: "center",
-            }}
-          />
+        <div
+          style={{
+            marginTop: "24px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <label
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          >
+            <input
+              type="checkbox"
+              checked={isPaymentDone}
+              onChange={(e) => setIsPaymentDone(e.target.checked)}
+              style={{ display: "none" }}
+            />
+            <span
+              style={{
+                position: "relative",
+                display: "inline-block",
+                width: "60px",
+                height: "34px",
+                backgroundColor: isPaymentDone ? "#4caf50" : "#ccc",
+                borderRadius: "34px",
+                transition: "background-color 0.3s",
+              }}
+            >
+              <span
+                style={{
+                  position: "absolute",
+                  height: "26px",
+                  width: "26px",
+                  left: isPaymentDone ? "30px" : "4px",
+                  bottom: "4px",
+                  backgroundColor: "white",
+                  transition: "0.3s",
+                  borderRadius: "50%",
+                }}
+              />
+            </span>
+            <span
+              style={{ marginLeft: "12px", fontWeight: "bold", color: "#fff" }}
+            >
+              {isPaymentDone ? "Payment is done" : "Slide to confirm payment"}
+            </span>
+          </label>
+
           <button
             onClick={handleConfirm}
+            disabled={!isPaymentDone}
             style={{
-              marginLeft: "10px",
+              marginLeft: "20px",
+              marginTop: "10px",
               padding: "10px 16px",
               border: "none",
               borderRadius: "6px",
-              backgroundColor: "#b11226",
+              backgroundColor: isPaymentDone ? "#b11226" : "#777",
               color: "#fff",
-              cursor: "pointer",
+              cursor: isPaymentDone ? "pointer" : "not-allowed",
               fontWeight: "bold",
             }}
           >
@@ -195,6 +233,7 @@ const PaymentConfirmation = ({
       ) : (
         <p style={{ marginTop: "20px", color: "#0f0" }}>
           ✅ Payment confirmed. Your booking ID is <strong>{bookingId}</strong>.
+          You will receive booking details in few hours.
         </p>
       )}
 
