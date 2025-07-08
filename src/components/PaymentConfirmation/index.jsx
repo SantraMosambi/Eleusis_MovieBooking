@@ -57,7 +57,7 @@ const PaymentConfirmation = ({
       setBookingId(bookingId);
 
       // 1. Add booking to SheetDB
-      await fetch("https://sheetdb.io/api/v1/swkzzoyhwcw49?sheet=booking", {
+      await fetch("https://sheetdb.io/api/v1/k36yjrfnofu3v?sheet=booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -77,7 +77,7 @@ const PaymentConfirmation = ({
       // 2. Update available seats
       const updatedSeats = selectedSlot.seats_available - seats;
       await fetch(
-        `https://sheetdb.io/api/v1/swkzzoyhwcw49/slot_id/${selectedSlot.slot_id}?sheet=shows`,
+        `https://sheetdb.io/api/v1/k36yjrfnofu3v/slot_id/${selectedSlot.slot_id}?sheet=shows`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

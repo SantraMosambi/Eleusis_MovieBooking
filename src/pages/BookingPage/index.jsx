@@ -18,7 +18,7 @@ const BookingPage = () => {
       const fetchSlot = async () => {
         try {
           const res = await fetch(
-            `https://sheetdb.io/api/v1/swkzzoyhwcw49/search?slot_id=${slotId}&sheet=shows`
+            `https://sheetdb.io/api/v1/k36yjrfnofu3v/search?slot_id=${slotId}&sheet=shows`
           );
           const data = await res.json();
           if (data.length > 0) setSlot(data[0]);

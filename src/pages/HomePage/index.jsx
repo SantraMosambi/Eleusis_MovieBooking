@@ -19,7 +19,7 @@ const HomePage = () => {
     const fetchSlots = async () => {
       try {
         const res = await fetch(
-          "https://sheetdb.io/api/v1/swkzzoyhwcw49?sheet=shows"
+          "https://sheetdb.io/api/v1/k36yjrfnofu3v?sheet=shows"
         );
         if (!res.ok) throw new Error("Network response was not ok");
         let data = await res.json();
