@@ -14,8 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/book/:slotId" element={<BookingPage />} />
-      </Routes>{" "}
-      <Analytics />
+      </Routes>
     </BrowserRouter>
   );
 }
