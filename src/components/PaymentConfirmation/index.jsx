@@ -17,11 +17,23 @@ const PaymentConfirmation = ({
   // ✅ Memoize UPI URL so it's not recomputed on every render
   const upiUrl = useMemo(
     () =>
-      `upi://pay?pa=9969372757@paytm&pn=${encodeURIComponent(
+      `upi://pay?pa=xcolaco999@oksbi&pn=${encodeURIComponent(
         name
       )}&am=${totalAmount}&cu=INR`,
     [name, totalAmount]
   );
+
+  const handleCopyUPI = () => {
+    navigator.clipboard
+      .writeText("xcolaco999@oksbi")
+      .then(() => {
+        alert("UPI ID copied to clipboard!");
+      })
+      .catch((err) => {
+        alert("Failed to copy UPI ID");
+        console.error(err);
+      });
+  };
 
   const handleConfirm = async () => {
     // if (confirmText.trim().toUpperCase() !== "PAID") {
@@ -138,7 +150,18 @@ const PaymentConfirmation = ({
           <strong>Total:</strong> ₹{totalAmount}
         </p>
         <p>
-          <strong>UPI ID:</strong> 9969372757@paytm
+          <strong>UPI ID:</strong> xcolaco999@oksbi
+          <button
+            onClick={handleCopyUPI}
+            style={{
+              marginLeft: "12px",
+              padding: "4px 8px",
+              fontSize: "12px",
+              cursor: "pointer",
+            }}
+          >
+            Copy
+          </button>
         </p>
       </div>
 

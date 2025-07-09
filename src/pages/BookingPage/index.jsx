@@ -283,7 +283,7 @@ const BookingPage = () => {
           selectedSlot={slot}
           seats={seats}
           totalAmount={totalAmount}
-          upiUrl={`upi://pay?pa=9969372757@paytm&pn=${name}&am=${totalAmount}&cu=INR`}
+          upiUrl={`upi://pay?pa=xcolaco999@oksbi&pn=${name}&am=${totalAmount}&cu=INR`}
           handleBack={handleBackToBooking}
         />
       )}
